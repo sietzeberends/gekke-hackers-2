@@ -9,7 +9,7 @@ meta = []
 def initialize():
     global rides
     global meta
-    f = open('easy.txt')
+    f = open('easyS.txt')
     vehicles = []
     i = 0
 
@@ -26,14 +26,18 @@ def initialize():
 
     # assign ride to vehicle
     for j in range(0, int(meta[2])):
-        vehicle = Vehicle(0, 0, rides[0][0], rides[0][1], rides[0][2], rides[0][3], False, rides[0][4], j)
-        vehicles.append(vehicle)
-        rides.pop(0)
-        global popped
-        popped += 1
-        print("popped: " + str(popped))
-        print(rides[0])
-
+        if (int(rides[0][7]) > 0):
+            vehicle = Vehicle(0, 0, rides[0][0], rides[0][1], rides[0][2], rides[0][3], False, rides[0][4], j)
+            vehicles.append(vehicle)
+            rides.pop(0)
+            global popped
+            popped += 1
+            print("popped: " + str(popped))
+            print(rides[0])
+        else:
+            print("skip")
+            rides.pop(0)
+            print("popped: " + str(popped))
     for k in range(0, int(meta[5]) - 1):
         if len(rides) == 0:
             break
