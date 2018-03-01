@@ -13,7 +13,7 @@ vehicles = []
 def initialize():
     global rides
     global meta
-    f = open('easyS1.txt')
+    f = open('laatste1.txt')
     global vehicles
     i = 0
 
