@@ -9,7 +9,7 @@ meta = []
 def initialize():
     global rides
     global meta
-    f = open('easyS.txt')
+    f = open('easySort.txt')
     vehicles = []
     i = 0
 
@@ -32,18 +32,10 @@ def initialize():
             rides.pop(0)
             global popped
             popped += 1
-            print("popped: " + str(popped))
-            print(rides[0])
         else:
-            print("skip")
             rides.pop(0)
-            print("popped: " + str(popped))
     for k in range(0, int(meta[5]) - 1):
-        if len(rides) == 0:
-            break
-        else:
-            step(vehicles)
-
+        step(vehicles)
 
 def getNextRide(vehicle):
     global rides
@@ -56,21 +48,23 @@ def getNextRide(vehicle):
 
     # if we can make it on time
     if time > totaleAfstand:
-        print("get new ride")
         vehicle = Vehicle(0, 0, rides[0][0], rides[0][1], rides[0][2], rides[0][3], False, rides[0][4], vehicle.index)
+        if vehicle.index == 2:
+            print(vehicle.xMovement)
+            print(vehicle.yMovement)
         rides.pop(0)
         global popped
         popped += 1
-        print("popped: " + str(popped))
-    #
+    # dublin here we come
     else:
-        print("can't make it")
         return
 
 def step(vehicles):
     global currentStep
     # let all vehicles make a step:
     for vehicle in vehicles:
+        if int(vehicle.index) == 1:
+            print("vehicle 0 now at: " + vehicle.position)
 
         # move right
         if vehicle.xMovement > 0:
@@ -92,14 +86,14 @@ def step(vehicles):
             vehicle.position[1] -= 1
             vehicle.yMovement += 1
 
-        # print ("xmovement: " + str(vehicle.xMovement))
-        # print ("ymovement: " + str(vehicle.yMovement))
-
         if vehicle.xMovement == 0 and vehicle.yMovement == 0:
             global score
             # check if pick up or arrival
             if vehicle.hasBegun == False:
                 # we have arrived at the passenger
+                # if vehicle.index == 2:
+                    # print("vehicle " + str(vehicle.index) + " arrived at passenger")
+                    # print("passenger was at: " + str(vehicle.beginRide[0]) + ", " + str(vehicle.beginRide[1]))
                 vehicle.hasBegun = True
                 if (currentStep <= vehicle.earliest):
                     global meta
@@ -109,6 +103,9 @@ def step(vehicles):
 
             # we have arrived at the destination of the passenger, add score
             else:
+                # if vehicle.index == 2:
+                    # print("vehicle " + str(vehicle.index) + " arrived at destination")
+                    # print("passenger was driven to: " + str(vehicle.endRide[0]) + ", " + str(vehicle.endRide[1]))
                 vehicle.hasBegun = False
                 #TODO ff chekcen of je wel score mag tellen
                 score += abs(vehicle.beginRide[0] - vehicle.endRide[0]) + abs(vehicle.beginRide[1] - vehicle.endRide[1])
@@ -117,9 +114,8 @@ def step(vehicles):
                     getNextRide(vehicle)
                 else:
                     return
-
-    print(currentStep)
+    # print(currentStep)
     currentStep += 1
-    print(score)
+    # print(score)
 
 initialize()
