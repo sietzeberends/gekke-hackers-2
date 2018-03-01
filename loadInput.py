@@ -27,6 +27,7 @@ def initialize():
     # assign ride to vehicle
     for j in range(0, int(meta[2])):
         if (int(rides[0][7]) > 0):
+            # print(rides[0])
             vehicle = Vehicle(0, 0, rides[0][0], rides[0][1], rides[0][2], rides[0][3], False, rides[0][4], j)
             vehicles.append(vehicle)
             rides.pop(0)
@@ -49,9 +50,9 @@ def getNextRide(vehicle):
     # if we can make it on time
     if time > totaleAfstand:
         vehicle = Vehicle(0, 0, rides[0][0], rides[0][1], rides[0][2], rides[0][3], False, rides[0][4], vehicle.index)
-        if vehicle.index == 2:
-            print(vehicle.xMovement)
-            print(vehicle.yMovement)
+        # print("index: " + str(vehicle.index))
+        # print(vehicle.xMovement)
+        # print(vehicle.yMovement)
         rides.pop(0)
         global popped
         popped += 1
