@@ -1,16 +1,20 @@
 from vehicle import Vehicle
+import csv
+textFile = open("output.txt", "w")
+textFile.write("Assignment B \n")
 
 currentStep = 0
 score = 0
 rides = []
 popped = 0
 meta = []
+vehicles = []
 
 def initialize():
     global rides
     global meta
-    f = open('easySort.txt')
-    vehicles = []
+    f = open('easyS1.txt')
+    global vehicles
     i = 0
 
     # get rides
@@ -28,7 +32,11 @@ def initialize():
     for j in range(0, int(meta[2])):
         if (int(rides[0][7]) > 0):
             # print(rides[0])
-            vehicle = Vehicle(0, 0, rides[0][0], rides[0][1], rides[0][2], rides[0][3], False, rides[0][4], j)
+            ridesToVehicle = []
+            ridesToVehicle.append(rides[0][8])
+            vehicle = Vehicle(0, 0, rides[0][0], rides[0][1], rides[0][2], rides[0][3], False, rides[0][4], j, ridesToVehicle)
+            global textFile
+            textFile.write("this vehicle is assigned " + str(len(vehicle.rides)) + " ride(s): " + str(vehicle.rides) + "\n")
             vehicles.append(vehicle)
             rides.pop(0)
             global popped
@@ -49,7 +57,9 @@ def getNextRide(vehicle):
 
     # if we can make it on time
     if time > totaleAfstand:
-        vehicle = Vehicle(0, 0, rides[0][0], rides[0][1], rides[0][2], rides[0][3], False, rides[0][4], vehicle.index)
+        global textFile
+        textFile.write("this vehicle is assigned " + str(len(vehicle.rides)) + " ride(s): " + str(vehicle.rides) + "\n")
+        vehicle = Vehicle(0, 0, rides[0][0], rides[0][1], rides[0][2], rides[0][3], False, rides[0][4], vehicle.index, vehicle.rides.append(rides[0][8]))
         # print("index: " + str(vehicle.index))
         # print(vehicle.xMovement)
         # print(vehicle.yMovement)
@@ -115,8 +125,7 @@ def step(vehicles):
                     getNextRide(vehicle)
                 else:
                     return
-    # print(currentStep)
+    print(currentStep)
     currentStep += 1
-    # print(score)
-
+    print(score)
 initialize()
