@@ -4,9 +4,11 @@ currentStep = 0
 score = 0
 rides = []
 popped = 0
+meta = []
 
 def initialize():
     global rides
+    global meta
     f = open('easy.txt')
     vehicles = []
     i = 0
@@ -24,7 +26,7 @@ def initialize():
 
     # assign ride to vehicle
     for j in range(0, int(meta[2])):
-        vehicle = Vehicle(0, 0, rides[0][0], rides[0][1], rides[0][2], rides[0][3], False)
+        vehicle = Vehicle(0, 0, rides[0][0], rides[0][1], rides[0][2], rides[0][3], False, rides[0][4], j)
         vehicles.append(vehicle)
         rides.pop(0)
         global popped
@@ -50,7 +52,8 @@ def getNextRide(vehicle):
 
     # if we can make it on time
     if time > totaleAfstand:
-        vehicle = Vehicle(0, 0, rides[0][0], rides[0][1], rides[0][2], rides[0][3], False)
+        print("get new ride")
+        vehicle = Vehicle(0, 0, rides[0][0], rides[0][1], rides[0][2], rides[0][3], False, rides[0][4], vehicle.index)
         rides.pop(0)
         global popped
         popped += 1
@@ -61,6 +64,7 @@ def getNextRide(vehicle):
         return
 
 def step(vehicles):
+    global currentStep
     # let all vehicles make a step:
     for vehicle in vehicles:
 
@@ -88,25 +92,28 @@ def step(vehicles):
         # print ("ymovement: " + str(vehicle.yMovement))
 
         if vehicle.xMovement == 0 and vehicle.yMovement == 0:
-            print("no movement left")
+            global score
             # check if pick up or arrival
             if vehicle.hasBegun == False:
                 # we have arrived at the passenger
                 vehicle.hasBegun = True
-                xMovement = int(vehicle.endRide[0]) - int(vehicle.position[0])
-                yMovement = int(vehicle.endRide[1]) - int(vehicle.position[1])
+                if (currentStep <= vehicle.earliest):
+                    global meta
+                    score += int(meta[4])
+                vehicle.xMovement = int(vehicle.endRide[0]) - int(vehicle.position[0])
+                vehicle.yMovement = int(vehicle.endRide[1]) - int(vehicle.position[1])
 
             # we have arrived at the destination of the passenger, add score
             else:
-                print("we've arrived")
-                global score
+                vehicle.hasBegun = False
+                #TODO ff chekcen of je wel score mag tellen
                 score += abs(vehicle.beginRide[0] - vehicle.endRide[0]) + abs(vehicle.beginRide[1] - vehicle.endRide[1])
                 # get next ride
                 if len(rides) > 0:
                     getNextRide(vehicle)
                 else:
                     return
-    global currentStep
+
     print(currentStep)
     currentStep += 1
     print(score)
